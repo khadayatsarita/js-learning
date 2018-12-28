@@ -1,0 +1,28 @@
+
+
+{
+	"data": [
+		[1, 'Jacky','New Road'],
+		[2, 'Hari','KTM'],
+		[3, 'Sita','New Road'],
+		[4, 'Raju','New Road'],
+		[5, 'Jacky','New Road'],
+		[6, 'Jacky','New Road'],
+		[7, 'Jacky','Balaju'],
+		[8, 'Jacky','New Road'],
+		[9, 'Jacky','New Road'],
+		[10, 'Jacky','New Road'],
+		[11, 'Jacky','New Road'],
+		[12, 'Jacky','Kapan'],
+		[13, 'Jacky','New Road'],
+		[14, 'Jacky','New Road'],
+		[15, 'Jacky','New Road'],
+		[16, 'Jacky','New Road'],
+		[17, 'Jacky','New Road'],
+		[18, 'Jacky','New Road'],
+		[19, 'Jacky','New Road'],
+		[20, 'Jacky20','Lalitpur']
+
+
+	]
+}

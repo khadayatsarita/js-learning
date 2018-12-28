@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Bootstrap 101 Template</title>
+
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="custom/custom-style.css">
+  <link rel="stylesheet" type="text/css" href="jquery/datatables.css">
+
+  <script src="jquery/jquery-3.3.1.min.js"></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="jquery/datatables.js"></script>
+
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="row">
+      <div class="col-md-2">
+        <img src="img/logo1.jpg">
+      </div>
+      <div class="col-md-8">
+        <h1>STUDENT APP</h1>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-info btn-lg btn-login" data-toggle="modal" data-target="#myModal">Sign In</button>
+        <button type="button" class="btn btn-info btn-lg btn-logout" data-toggle="modal">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <h4>STUDENT LIST</h4>
+  </div>
+
+  <div class="container pull-center">
+    <button class="btn btn-default btn-add-row">Add</button> <br><br>
+    <table class="table table-striped display" id="user-table" width="100%">
+      <thead>
+        <tr>
+          <th scope="col">S.N.</th>
+          <th scope="col">FirstName</th>
+          <th scope="col">Address</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+  <!-- Modal -->
+  <div id="myModal1" class="modal fade1" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Update User</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="m-sn" />
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" class="form-control" id="m-FirstName" placeholder="Enter First Name">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Address</label>
+            <input type="Address" class="form-control" id="m-address" placeholder="Address">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default m-btn-save">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+
+    var userlist = [
+      [1, 'Jacky', 'New Road'],
+      [2, 'Hari', 'KTM'],
+      [3, 'Sita', 'New Road'],
+      [4, 'Raju', 'New Road'],
+      [5, 'Jacky', 'New Road'],
+      [6, 'Jacky', 'New Road'],
+      [7, 'Jacky', 'Balaju'],
+      [8, 'Jacky', 'New Road'],
+      [9, 'Jacky', 'New Road'],
+      [10, 'Jacky', 'New Road'],
+      [11, 'Jacky', 'New Road'],
+      [12, 'Jacky', 'Kapan'],
+      [13, 'Jacky', 'New Road'],
+      [14, 'Jacky', 'New Road'],
+      [15, 'Jacky', 'New Road'],
+      [16, 'Jacky', 'New Road'],
+      [17, 'Jacky', 'New Road'],
+      [18, 'Jacky', 'New Road'],
+      [19, 'Jacky', 'New Road'],
+      [20, 'Jacky20', 'Lalitpur']
+    ];
+
+    var isSave=false;
+
+    $(document).ready(function () {
+
+      var table = $('#user-table').DataTable({
+        data: userlist,
+        "columnDefs": [{
+          "targets": -2,
+          "data": null,
+          "defaultContent": '<button type="submit"  class="btn btn-success btn-update" >Update</button>'
+        },
+        {
+          "targets": -1,
+          "data": null,
+          "defaultContent": '<button type="submit" class="btn btn-danger btn-remove" >Delete</button>'
+        }]
+      });
+
+      $('#user-table tbody').on('click', '.btn-remove', function () {
+        table.row($(this).parents('tr')).remove().draw();
+      });
+
+      $('#user-table tbody').on('click', '.btn-update', function () {
+        isSave=false;
+        var closestRow = $(this).closest('tr');
+        var row_object = table.row(closestRow).data();
+        $('#m-sn').val(row_object[0]);
+        $('#m-FirstName').val(row_object[1]);
+        $('#m-address').val(row_object[2]);
+        $('#myModal1').modal('show');
+      });
+
+      $('.m-btn-save').on('click', function () {
+        if (!isSave) {
+          var rowNo = $('#m-sn').val() - 1;
+          var temp = table.row(rowNo).data();
+          temp[1] = $('#m-FirstName').val();
+          temp[2] = $('#m-address').val();
+          table.row(rowNo).data(temp).invalidate();
+          $('#myModal1').modal('hide');
+        }else{
+          console.log(table.page.info().recordsTotal);
+          var sn = table.page.info().recordsTotal + 1;
+          var fname = $('#m-FirstName').val();
+          var address = $('#m-address').val();
+          table.row.add([sn, fname, address]).draw();
+          $('#myModal1').modal('hide');
+        }
+        clearModal();
+      });
+      
+      $('.btn-add-row').on('click',function(){
+        isSave=true;
+        $('#myModal1').modal('show');
+      });
+
+
+    });
+    
+    function clearModal() {
+        $('#m-sn').val("");
+        $('#m-FirstName').val("");
+        $('#m-address').val("");
+      }
+
+    function login() {
+      $('#myModal').modal('hide');
+      $('.btn-logout').show();
+      $('.btn-login').hide();
+    }
+
+
+
+  </script>
+  <div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="body">
+              <form action="#">Username<br>
+                <input type="text" name="Username"><br>Password<br>
+                <input type="text" name="Password">
+              </form>
+            </div><br>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>&nbsp;&nbsp;
+          </div>
+          <button type="button" class=" btn btn-info" data-dismiss="modal" onclick="login()">Login</button>&nbsp;&nbsp;
+          <!--  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-inverse">
+    <div class="footer">
+      <p>Contact information:<a href="mailto:someone@example.com">someone@example.com</a>.</p>
+    </div>
+  </nav>
+</body>
+
+</html>
